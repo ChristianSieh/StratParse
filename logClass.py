@@ -2,9 +2,12 @@ class logClass:
 	action = ""
 	headerType = ""
 	headerSubType = ""
-	data = ""
+	body = []
 
 	def printTestLog(self):
-		print("Action: ", self.action, type(self.action))
-		print("Type: ", self.headerType, type(self.headerType))
-		print("SubType: ", self.headerSubType, type(self.headerSubType))
+		print("Action: ", self.action)
+		print("Type: ", self.headerType)
+		print("SubType: ", self.headerSubType)
+		for data in self.body:
+			for key, value in data.items():
+				print("Key: ", key, "Values: ", value, type(value))
