@@ -1,6 +1,7 @@
 import json
 import logClass
 
+#Read specified file
 def readFile(filename):
 	with open(filename, 'r') as logfile:
 		data = logfile.read()
@@ -10,6 +11,23 @@ def readFile(filename):
 
 	return logs
 
+#Check if string is an int
+def isInt(num):
+	try:
+		num = int(num)
+		return True
+	except ValueError:
+		return False
+
+#Check if string is a float
+def isFloat(num):
+	try:
+		float(num)
+		return True
+	except ValueError:
+		return False
+
+#Seperate header and bodies
 def parseLog(log):
 	myLog = logClass.logClass()
 
@@ -34,12 +52,12 @@ def parseLog(log):
 	for body in bodies:
 		body = body.strip()
 		body = body.rstrip('}')
-		print(body)
 		if(body != "\n"):
 			tempData.append(body)
 
 	return myLog, tempData
 
+#Parses the body of each log
 def parseData(log, tempData):
 	for body in tempData:
 		lines = body.splitlines()
@@ -50,8 +68,34 @@ def parseData(log, tempData):
 				temp = line.split(' ', 1)
 				key = temp[0]
 				value = temp[1]
-				data[key] = value
+				data[key] = parseValue(value)
 		log.body.append(data)
+
+#Parse the values of each key to determine data type
+def parseValue(value):
+	#TODO Finish splitting lists		
+	#If list (by checking brackets)
+		#If brackets then check if empty
+		#Elif check if datetime (Use library parser?)
+		#Else split and check if int, float, string
+	#else
+		#Check if int, float, string
+	if('{' in value):
+		value.replace('{', '').replace('}', '')
+		if(value.isspace()):
+			temp = []
+			return temp
+		#elif():
+		#else:
+			
+	else:
+		if(isFloat(value)):
+			if(isInt(value)):
+				return int(value)
+			else:
+				return float(value)
+		else:
+				return value		
 
 #Read file
 logs = readFile("Sample-stratasys-status-log.txt")
@@ -68,6 +112,6 @@ for log in logs:
 	logList.append(myLog)
 
 #Print logs
-#for log in logList:
-	#log.printTestLog()
+for log in logList:
+	log.printTestLog()
 
